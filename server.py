@@ -8,11 +8,9 @@ import  os
 # Flask constructor
 app = Flask(__name__)  
 import os
-
 SECRET_KEY = os.urandom(32)
-
 app.config['SECRET_KEY'] = SECRET_KEY
-print(SECRET_KEY)
+
 class UploadForm(FlaskForm):
     file = FileField()
 
