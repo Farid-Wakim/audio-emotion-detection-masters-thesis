@@ -1,0 +1,17 @@
+--2023-07-10 16:12:31--  https://download.qemu.org/qemu-8.0.3.tar.xz
+Resolving download.qemu.org (download.qemu.org)... 138.199.14.4, 2a02:6ea0:dc00::10
+Connecting to download.qemu.org (download.qemu.org)|138.199.14.4|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 126710536 (121M) [application/octet-stream]
+Saving to: ‘qemu-8.0.3.tar.xz.1’
+
+
+
+2023-07-10 16:27:41 (38.5 KB/s) - Read error at byte 294355/126710536 (Success). Retrying.
+
+--2023-07-10 16:27:42--  (try: 2)  https://download.qemu.org/qemu-8.0.3.tar.xz
+Connecting to download.qemu.org (download.qemu.org)|138.199.14.4|:443... connected.
+HTTP request sent, awaiting response... 206 Partial Content
+Length: 126710536 (121M), 126416181 (121M) remaining [application/octet-stream]
+Saving to: ‘qemu-8.0.3.tar.xz.1’
+
