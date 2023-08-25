@@ -15,11 +15,19 @@
          <h4>Research by Farid Wakim</h4>
          <h4>Masters Thesis at LIU</h4>
       </div>
-  <h1>Please Upload either a pretrained model(.h5, .json, .yml), or enter the neurons
-	specifications(type them in the box below) as well as the data to be trained on(video).
-    <form action = "/success" method = "post" enctype="multipart/form-data">  
-        <input type="file" name="file" />  
-        <input type = "submit" value="Upload">  
-    </form>  
+  <h2>Please Upload either a pretrained model(.h5, .json, .yml)</h2>
+    <form action = "/modelUploaded" method = "post" enctype="multipart/form-data">  
+        <input class="form-control form-control-danger width-25" type="file" name="file">  
+        <input class="btn btn-success" type="submit" value="Upload">  
+    </form>
+
+
+<h1>OR</h1>
+ <h2>Please enter the neurons specifications(type them in the box below) as well as the data to be trained on(video).</h2>
+    <form action = "/success" method = "post" enctype="multipart/form-data">
+        <input class="form-control form-control-danger width-25" type="file" na>
+        <input class="btn btn-success" type="submit" value="Upload">
+    </form>
+  
 </body>  
 </html>
