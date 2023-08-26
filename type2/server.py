@@ -17,7 +17,8 @@ def modelUploaded():
     if request.method == 'POST':
         f = request.files['file']
         extension = os.path.splitext(f.filename)[1]
-        f.filename = 'uploads/model' + str(time.time()) + extension
+        f.filename = './model/model' + str(time.time()) + extension
+        print(f.filename)
         f.save(f.filename)
     return render_template('modelUploaded.html', name=f.filename)
 

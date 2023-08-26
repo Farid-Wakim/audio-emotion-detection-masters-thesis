@@ -14,15 +14,17 @@ app.config['SECRET_KEY'] = SECRET_KEY
 class UploadForm(FlaskForm):
     file = FileField()
 
-@app.route('/', methods =["GET", "POST"])
+@app.route('/', methods =['GET', 'POST'])
 def render():
     form = UploadForm()
     
     if form.validate_on_submit():
         filename = secure_filename(form.file.data.filename)
-        form.file.data.save('/uploads/' + filename)
+        form.file.data.save('uploads/' + filename)
         return redirect(url_for('upload'))
     return render_template("index.html" , form=form)
  
 if __name__=='__main__':
    app.run()
+
+
