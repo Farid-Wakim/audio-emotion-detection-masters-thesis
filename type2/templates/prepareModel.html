@@ -17,20 +17,40 @@
       </div>
 
  <h2>Please enter the neurons specifications(type them in the box below) as well as the data to be trained on(video).</h2>
-    <form action = "/success" method = "post" enctype="multipart/form-data">
-        <input  rows="10" class="form-control form-control-danger width-25"  type="textarea" 
-        placeholder="Audio_Processing_Parameters =  {'rate' : 0.8,'sampling_rate' : 44100,
-        'pitch_factor' : 0.7,'type':['noise','stretch','shift','pitch'],'frame_length':2048,'hop_length':512,
-        'duration:5,'offset':0.5} CSV_files_saved =  {'data_path_Emotions': 'EmotionModelGenerator/Output/'}
-         Dataset_Paths = {'Ravdess': 'DataSet/English/Ravdess/audio_speech_actors_01-24/'','Crema':
-          'DataSet/English/Crema/','Tess': 'DataSet/English/Tess/','Savee': 'DataSet/English/Savee/'}
-          Output_models_path = {'Emotion_model':'Output/'} NN_parameters = {'neurons':[8,16,32,64,128,256,512,1024],
+    <form action = "/prepareConfig" method = "post" enctype="multipart/form-data">
+        <input  class="form-control form-control-danger width-25" id="config" name="config" type="textarea" 
+        placeholder="
+        Audio_Processing_Parameters =  
+         {'rate' : 0.8,'sampling_rate' : 44100,
+        'pitch_factor' : 0.7,
+        'type': ['noise','stretch','shift','pitch'],
+         'frame_length':2048,'hop_length':512,
+        'duration:5,'offset':0.5} 
+        CSV_files_saved =  
+         {'data_path_Emotions': 'EmotionModelGenerator/Output/'}
+        Dataset_Paths = 
+        {
+        'Ravdess': 'DataSet/English/Ravdess/audio_speech_actors_01-24/'','Crema':
+        'DataSet/English/Crema/','Tess': 'DataSet/English/Tess/',
+        'Savee': 'DataSet/English/Savee/'}
+          Output_models_path = '{'Emotion_model':'Output/'}
+          NN_parameters = {
+          'neurons':[8,16,32,64,128,256,512,1024],
           'loss_functions':['mean_squared_error','binary_crossentropy','categorical_crossentropy'],
-          'optimizers': ['adam','sgd'],'metrics':['accuracy','mse','mae'],'monitors':['val_accuracy','val_mse','val_mae'],
-          'patience':[1,2,3,4,5,6,7,10],'learning_rate':[0.00001,0.0005,0.001,0.05, 0.1], 'factor':[0.1,0.2,0.3,0.4,0.5],'pochs':5} sleeping_time = 10">
+          'optimizers': ['adam','sgd'],'metrics':['accuracy','mse','mae'],
+          'monitors':['val_accuracy','val_mse','val_mae'],
+          'patience':[1,2,3,4,5,6,7,10],
+          'learning_rate':[0.00001,0.0005,0.001,0.05, 0.1], 
+          'factor':[0.1,0.2,0.3,0.4,0.5],'pochs':5} 
+          sleeping_time = 10">
+
+
+
+
     </input>
         <input class="btn btn-success" type="submit" value="Confirm">
     </form>
   
-</body>  
+<a href="/" style="display:block">Go Home</a>
+  
 </html>
