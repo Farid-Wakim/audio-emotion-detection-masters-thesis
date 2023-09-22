@@ -4,6 +4,39 @@ from flask import *
 import time
 import os.path
 import os, glob
+from glob import glob
+
+import subprocess, os
+import pandas as pd
+import seaborn as sns
+import numpy as np
+import tensorflow as tf
+
+import matplotlib.pyplot as plt
+from pydub import AudioSegment
+from pydub.silence import split_on_silence
+import librosa as lb
+import librosa.display
+import noisereduce as nr
+import keras
+import tensorflow as tf
+
+
+from scipy.io import wavfile
+
+from pathlib import Path
+
+import sys
+
+
+from tensorflow.python.keras.callbacks import EarlyStopping, ReduceLROnPlateau, ModelCheckpoint
+
+from sklearn.preprocessing import StandardScaler, LabelEncoder
+from sklearn.model_selection import train_test_split
+
+
+
+
 
 app = Flask(__name__)
 
