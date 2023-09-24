@@ -15,12 +15,21 @@
          <h4>Research by Farid Wakim</h4>
          <h4>Masters Thesis at LIU</h4>
       </div>
-  <h2>Please Upload the data to test on (video, audio, txt)</h2>
-    <form action = "/dataUploaded" method = "post" enctype="multipart/form-data">  
+  <h2>Please Upload either a pretrained model(.h5, .json, .yml)</h2>
+  button here to go to upload
+  
+    <form action = "/modelUploaded" method = "post" enctype="multipart/form-data">  
         <input class="form-control form-control-danger width-25" type="file" name="file">  
         <input class="btn btn-success" type="submit" value="Upload">
     </form>
+    <h1>OR</h1>
+    
+    <a href="prepareModel">  
+        <input class="btn btn-secondary" type="submit" value="Prepare your own">    
+    </a>
+
+    </form>
   
-<a href="/" style="display:block">Go Home</a>
+<a href="/" style="display:block">Reset files</a>
   
 </html>
