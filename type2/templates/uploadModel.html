@@ -15,14 +15,17 @@
          <h4>Research by Farid Wakim</h4>
          <h4>Masters Thesis at LIU</h4>
       </div>
-  <h2>Please Upload either a pretrained model(.h5, .json, .yml)</h2>
-    <form action = "/modelUploaded" method = "post" enctype="multipart/form-data">  
-        <input class="form-control form-control-danger width-25" type="file" name="file">  
-        <input class="btn btn-success" type="submit" value="Upload">
-    </form>
-    
-    </form>
-  
+  <h2>Model has been uploaded or created, kindly now upload the data you would like to test the algorithm on</h2>
+<h4>
+    It can be a video file, in which case it will then be transformed to audio and processed, or an audio file that will be cut up according to the silences, as well as have the background noise reduced.
+</h4>
+{{ error }}
+<form action = "/uploadTest" method = "POST" enctype="multipart/form-data">  
+    <input class="form-control form-control-danger width-25" type="file" name="file">  
+    <input class="btn btn-success" type="submit" value="Upload">
+</form>
+
+ 
 <a href="/" style="display:block">Reset files</a>
   
 </html>
