@@ -107,14 +107,20 @@ def uploadTest():
                     f.save(f.filename)
                     video = AudioSegment.from_file(f.filename)
                     video.export("type2/files/test.mp3", format="mp3")
-
                     return render_template('processVideo.html')
+                
                 elif(extension == '.mp3' or extension == '.wav' or extension == '.wma'):
                     app.logger.info('extension valid -->' +extension)
                     f.filename = 'type2/files/test'+ extension            
                     f.save(f.filename)
                     return render_template('processAudio.html')
                 
+                elif(extension == '.txt' or extension == '.json' ):
+                    app.logger.info('extension valid -->' +extension)
+                    f.filename = 'type2/files/test'+ extension            
+                    f.save(f.filename)
+                    return render_template('processText.html')
+  
                 else:
                     app.logger.info('invalid extension  --> '+extension)
                     return render_template('uploadModel.html', error="Incorrect Format")
@@ -126,15 +132,10 @@ def uploadTest():
 def processVideo():
     return send_file("files\\test.mp3",as_attachment=True)
 
-    
 
-
-
-
-#process video
-# @app.route('/processVideo', methods=['POST'])
-# def processVideo():
-#     return render_template('processVideo.html')
+@app.route('/processAudio')
+def processAudio():    
+    return send_file("files\\test.mp3",as_attachment=True)
 
 
 
