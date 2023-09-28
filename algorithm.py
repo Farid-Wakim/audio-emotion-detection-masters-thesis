@@ -9,18 +9,7 @@ Original file is located at
 ## This code represents the work of Farid Wakim(myself) to study emotion detection algorithms in order to improve it and allow it to become multilingual. It was done in order to achieve the Masters Degree in LIU.
 """
 
-# Show: Avengers
-# installing the needed external libraries and utilities
-!apt install ffmpeg
-!pip install soundfile
-!pip3 install noisereduce
-!pip install ffmpeg-python
-!pip install imageio-ffmpeg
-!pip install pydub
-!pip install SpeechRecognition
-!pip3 install librosa
-!pip3 install tensorflow
-!pip3 install pydub
+
 
 # importing the os library helps us run os subproccesses
 # importing the glob library to allow us to get the list of files in a directory

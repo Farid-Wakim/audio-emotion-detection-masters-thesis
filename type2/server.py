@@ -8,31 +8,31 @@ from glob import glob
 
 import subprocess, os
 import pandas as pd
-import seaborn as sns
+# import seaborn as sns
 import numpy as np
-import tensorflow as tf
+# import tensorflow as tf
 
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 from pydub import AudioSegment
-from pydub.silence import split_on_silence
-import librosa as lb
-import librosa.display
-import noisereduce as nr
-import keras
-import tensorflow as tf
+# from pydub.silence import split_on_silence
+# import librosa as lb
+# import librosa.display
+# import noisereduce as nr
+# import keras
+# import tensorflow as tf
 
 
-from scipy.io import wavfile
+# from scipy.io import wavfile
 
-from pathlib import Path
+# from pathlib import Path
 
-import sys
+# import sys
 
 
-from tensorflow.python.keras.callbacks import EarlyStopping, ReduceLROnPlateau, ModelCheckpoint
+# from tensorflow.python.keras.callbacks import EarlyStopping, ReduceLROnPlateau, ModelCheckpoint
 
-from sklearn.preprocessing import StandardScaler, LabelEncoder
-from sklearn.model_selection import train_test_split
+# from sklearn.preprocessing import StandardScaler, LabelEncoder
+# from sklearn.model_selection import train_test_split
 
 
 
@@ -105,24 +105,39 @@ def uploadTest():
                     app.logger.info('extension valid -->' +extension)
                     f.filename = 'type2/files/test'+ extension            
                     f.save(f.filename)
-                    return render_template('uploadTest.html')
+                    video = AudioSegment.from_file(f.filename)
+                    video.export("type2/files/test.mp3", format="mp3")
+
+                    return render_template('processVideo.html')
                 elif(extension == '.mp3' or extension == '.wav' or extension == '.wma'):
                     app.logger.info('extension valid -->' +extension)
                     f.filename = 'type2/files/test'+ extension            
                     f.save(f.filename)
-                    return render_template('uploadTest.html')
+                    return render_template('processAudio.html')
                 
                 else:
                     app.logger.info('invalid extension  --> '+extension)
-                    return render_template('chooseModel.html', error="Incorrect Format")
+                    return render_template('uploadModel.html', error="Incorrect Format")
         else:
-            return render_template('chooseModel.html', error="Unexpected Error")
+            return render_template('uploadModel.html', error="Unexpected Error")
+
+
+@app.route('/processVideo')
+def processVideo():
+    return send_file("files\\test.mp3",as_attachment=True)
+
+    
+
+
 
 
 #process video
-@app.route('/processVideo', methods=['POST'])
-def processVideo():
-    return render_template('processVideo.html')
+# @app.route('/processVideo', methods=['POST'])
+# def processVideo():
+#     return render_template('processVideo.html')
+
+
+
 
 
 #process audio
