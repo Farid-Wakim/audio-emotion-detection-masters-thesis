@@ -11,31 +11,10 @@ import pandas as pd
 # import seaborn as sns
 import numpy as np
 # import tensorflow as tf
-
-# import matplotlib.pyplot as plt
+from scipy.io import wavfile
 from pydub import AudioSegment
-# from pydub.silence import split_on_silence
-# import librosa as lb
-# import librosa.display
-# import noisereduce as nr
-# import keras
-# import tensorflow as tf
 
-
-# from scipy.io import wavfile
-
-# from pathlib import Path
-
-# import sys
-
-
-# from tensorflow.python.keras.callbacks import EarlyStopping, ReduceLROnPlateau, ModelCheckpoint
-
-# from sklearn.preprocessing import StandardScaler, LabelEncoder
-# from sklearn.model_selection import train_test_split
-
-
-
+import noisereduce as nr
 
 
 app = Flask(__name__)
@@ -43,6 +22,21 @@ app = Flask(__name__)
 model=""
 train=""
 test = ""
+
+
+
+def transformAudio(audioFileName):
+    audio = AudioSegment.from_file(audioFileName)
+    audio.export("type2/files/test.wav", format="wav")
+    app.logger.info('noise being reduced')
+
+    # perform noise reduction
+    time.sleep(2.4)
+    rate, data = wavfile.read("type2\\files\\test.wav")
+    orig_shape = data.shape
+    data = np.reshape(data, (2, -1))
+    reduced_noise = nr.reduce_noise(y=data,sr=rate,stationary=True)
+    wavfile.write("type2\\files\\test_nr.wav", rate, reduced_noise.reshape(orig_shape))
 
 
 @app.route('/')
@@ -106,13 +100,16 @@ def uploadTest():
                     f.filename = 'type2/files/test'+ extension            
                     f.save(f.filename)
                     video = AudioSegment.from_file(f.filename)
-                    video.export("type2/files/test.mp3", format="mp3")
+                    video.export("type2/files/test.wav", format="wav")
+                    transformAudio(f.filename)
                     return render_template('processVideo.html')
                 
                 elif(extension == '.mp3' or extension == '.wav' or extension == '.wma'):
                     app.logger.info('extension valid -->' +extension)
                     f.filename = 'type2/files/test'+ extension            
                     f.save(f.filename)
+                    transformAudio(f.filename)
+
                     return render_template('processAudio.html')
                 
                 elif(extension == '.txt' or extension == '.json' ):
@@ -130,21 +127,21 @@ def uploadTest():
 
 @app.route('/processVideo')
 def processVideo():
-    return send_file("files\\test.mp3",as_attachment=True)
+    return send_file("files\\test_nr.wav",as_attachment=True)
 
 
 @app.route('/processAudio')
 def processAudio():    
-    return send_file("files\\test.mp3",as_attachment=True)
+    return send_file("files\\test_nr.wav",as_attachment=True)
 
 
 
 
 
-#process audio
-@app.route('/processAudio', methods=['POST'])
-def processAudio():
-    return render_template('processAudio.html')
+# #process audio
+# @app.route('/processAudio', methods=['POST'])
+# def processAudio():
+#     return render_template('processAudio.html')
 
 
 #process text
