@@ -5,12 +5,22 @@ import time
 import os.path
 import os, glob
 from glob import glob
+from io import StringIO
 
 import subprocess, os
 import pandas as pd
 # import seaborn as sns
+import tensorflow as tf
+import librosa as lb
+
 import numpy as np
-# import tensorflow as tf
+import matplotlib.pyplot as plt
+from tensorflow.keras.layers import Input, Conv2D, Dense, Flatten, Dropout
+from tensorflow.keras.layers import GlobalMaxPooling2D, MaxPooling2D
+from tensorflow.keras.layers import BatchNormalization
+from tensorflow.keras.models import Model
+from tensorflow.keras.models import load_model
+
 from scipy.io import wavfile
 from pydub import AudioSegment
 
@@ -27,16 +37,36 @@ test = ""
 
 def transformAudio(audioFileName):
     audio = AudioSegment.from_file(audioFileName)
-    audio.export("type2/files/test.wav", format="wav")
+    audio.export("type2/files/test_input.wav", format="wav")
     app.logger.info('noise being reduced')
 
     # perform noise reduction
     time.sleep(2.4)
-    rate, data = wavfile.read("type2\\files\\test.wav")
+    rate, data = wavfile.read("type2\\files\\test_input.wav")
     orig_shape = data.shape
     data = np.reshape(data, (2, -1))
     reduced_noise = nr.reduce_noise(y=data,sr=rate,stationary=True)
-    wavfile.write("type2\\files\\test_nr.wav", rate, reduced_noise.reshape(orig_shape))
+    wavfile.write("type2\\files\\test_input_noise_reduced.wav", rate, reduced_noise.reshape(orig_shape))
+
+
+
+def generateSpectos():
+    wavPath = 'type2\\files\\*.wav'
+    audioFiles = glob(wavPath)
+    for af in audioFiles:
+        y, sr = lb.load(af)
+        lb.feature.melspectrogram(y=y, sr=sr)
+        D = np.abs(lb.stft(y))**2
+        S = lb.feature.melspectrogram(S=D)
+        plt.figure(figsize=(10, 4))
+        lb.display.specshow(lb.power_to_db(S,ref=np.max), y_axis='mel', fmax=8000,x_axis='time')
+        plt.colorbar(format='%+2.0f dB')
+        plt.title('Mel spectrogram for '+af)
+        plt.tight_layout()
+        plt.savefig('static\\spc'+af+'.png')
+
+
+
 
 
 @app.route('/')
@@ -72,6 +102,7 @@ def uploadModel():
                 app.logger.info('extension valid -->' +extension)
                 f.filename = 'type2/files/model'+ extension            
                 f.save(f.filename)
+                model = f            
                 return render_template('uploadModel.html')
             else:
                 app.logger.info('invalid extension  --> '+extension)
@@ -100,8 +131,9 @@ def uploadTest():
                     f.filename = 'type2/files/test'+ extension            
                     f.save(f.filename)
                     video = AudioSegment.from_file(f.filename)
-                    video.export("type2/files/test.wav", format="wav")
+                    video.export("type2/files/test_input.wav", format="wav")
                     transformAudio(f.filename)
+                    generateSpectos()
                     return render_template('processVideo.html')
                 
                 elif(extension == '.mp3' or extension == '.wav' or extension == '.wma'):
@@ -109,7 +141,7 @@ def uploadTest():
                     f.filename = 'type2/files/test'+ extension            
                     f.save(f.filename)
                     transformAudio(f.filename)
-
+                    generateSpectos()
                     return render_template('processAudio.html')
                 
                 elif(extension == '.txt' or extension == '.json' ):
@@ -127,22 +159,12 @@ def uploadTest():
 
 @app.route('/processVideo')
 def processVideo():
-    return send_file("files\\test_nr.wav",as_attachment=True)
+    return send_file("files\\test_input_noise_reduced.wav",as_attachment=True)
 
 
 @app.route('/processAudio')
 def processAudio():    
-    return send_file("files\\test_nr.wav",as_attachment=True)
-
-
-
-
-
-# #process audio
-# @app.route('/processAudio', methods=['POST'])
-# def processAudio():
-#     return render_template('processAudio.html')
-
+    return send_file("files\\test_input_noise_reduced.wav",as_attachment=True)
 
 #process text
 @app.route('/processText', methods=['POST'])
@@ -157,9 +179,19 @@ def trainingInProgress():
 
 
 #process video
-@app.route('/showResult', methods=['POST'])
+@app.route('/showResult')
 def showResult():
-    return render_template('showResult.html')
+    savedModel=load_model('type2\\files\\model.h5')
+    origStdout = sys.stdout
+    outputBuf = StringIO()
+    sys.stdout = outputBuf
+    savedModel.summary()
+    sys.stdout = origStdout
+    Get_model_description = outputBuf.getvalue()
+    savedModel.predict("thingamabob")
+    print(Get_model_description)
+    return render_template('showResult.html', summary=' '+summary)
+
 
 
 
