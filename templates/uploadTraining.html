@@ -1,0 +1,26 @@
+<!DOCTYPE htmodel>
+<htmodel lang="en">
+   <head>
+      <meta charset="UTF-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Audio Emotion Detection</title>
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+         integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+
+</head>  
+<body>
+<div class="text-center">
+         <h1>Audio Emotion Detection</h1>
+         <h4>Research by Farid Wakim</h4>
+         <h4>Masters Thesis at LIU</h4>
+      </div>
+  <h2>Training Data: Please Upload the data to train on (video, audio, txt)</h2>
+    <form action = "/dataUploaded" method = "post" enctype="multipart/form-data">  
+        <input class="form-control form-control-danger width-25" type="file" name="file">  
+        <input class="btn btn-success" type="submit" value="Upload">
+    </form>
+  
+<a href="/" style="display:block">Go Home</a>
+  
+</html>
