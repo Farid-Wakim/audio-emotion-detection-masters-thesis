@@ -1,2 +1,2 @@
-import tensorflow as tf
-print(tf.config.list_physical_devices('GPU'))
+import tensorflow
+tensorflow.config.list_physical_devices('GPU')

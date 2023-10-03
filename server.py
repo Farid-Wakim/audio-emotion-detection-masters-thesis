@@ -1,78 +1,10 @@
-from distutils.log import debug
-from fileinput import filename
-from flask import *
-import time
-import os.path
-import os, glob
-from glob import glob
-from io import StringIO
-
-import subprocess, os
-import pandas as pd
-# import seaborn as sns
-import tensorflow as tf
-import librosa as lb
-
-import numpy as np
-import matplotlib.pyplot as plt
-from tensorflow.keras.layers import Input, Conv2D, Dense, Flatten, Dropout
-from tensorflow.keras.layers import GlobalMaxPooling2D, MaxPooling2D
-from tensorflow.keras.layers import BatchNormalization
-from tensorflow.keras.models import Model
-from tensorflow.keras.models import load_model
-
-from scipy.io import wavfile
-from pydub import AudioSegment
-
-import noisereduce as nr
-
-
-app = Flask(__name__)
-
-model=""
-train=""
-test = ""
-
-
-
-def transformAudio(audioFileName):
-    audio = AudioSegment.from_file(audioFileName)
-    audio.export("type2/files/test_input.wav", format="wav")
-    app.logger.info('noise being reduced')
-
-    # perform noise reduction
-    time.sleep(2.4)
-    rate, data = wavfile.read("type2\\files\\test_input.wav")
-    orig_shape = data.shape
-    data = np.reshape(data, (2, -1))
-    reduced_noise = nr.reduce_noise(y=data,sr=rate,stationary=True)
-    wavfile.write("type2\\files\\test_input_noise_reduced.wav", rate, reduced_noise.reshape(orig_shape))
-
-
-
-def generateSpectos():
-    wavPath = 'type2\\files\\*.wav'
-    audioFiles = glob(wavPath)
-    for af in audioFiles:
-        y, sr = lb.load(af)
-        lb.feature.melspectrogram(y=y, sr=sr)
-        D = np.abs(lb.stft(y))**2
-        S = lb.feature.melspectrogram(S=D)
-        plt.figure(figsize=(10, 4))
-        lb.display.specshow(lb.power_to_db(S,ref=np.max), y_axis='mel', fmax=8000,x_axis='time')
-        plt.colorbar(format='%+2.0f dB')
-        plt.title('Mel spectrogram for '+af)
-        plt.tight_layout()
-        plt.savefig('static\\spc'+af+'.png')
-
-
 
 
 
 @app.route('/')
 def main():
     # resets all files
-    for filename in glob("type2/files/*"):
+    for filename in glob("files/*"):
         os.remove(filename) 
         print("All files deleted")
     return render_template('index.html')
@@ -100,7 +32,7 @@ def uploadModel():
             extension = os.path.splitext(f.filename)[1]
             if(extension == '.h5' or extension == '.yml' or extension == '.json'):
                 app.logger.info('extension valid -->' +extension)
-                f.filename = 'type2/files/model'+ extension            
+                f.filename = 'files/model'+ extension            
                 f.save(f.filename)
                 model = f            
                 return render_template('uploadModel.html')
@@ -128,17 +60,17 @@ def uploadTest():
                 extension = os.path.splitext(f.filename)[1]
                 if(extension == '.mp4' or extension == '.mov' or extension == '.avi'):
                     app.logger.info('extension valid -->' +extension)
-                    f.filename = 'type2/files/test'+ extension            
+                    f.filename = 'files/test'+ extension            
                     f.save(f.filename)
                     video = AudioSegment.from_file(f.filename)
-                    video.export("type2/files/test_input.wav", format="wav")
+                    video.export("files/test_input.wav", format="wav")
                     transformAudio(f.filename)
                     generateSpectos()
                     return render_template('processVideo.html')
                 
                 elif(extension == '.mp3' or extension == '.wav' or extension == '.wma'):
                     app.logger.info('extension valid -->' +extension)
-                    f.filename = 'type2/files/test'+ extension            
+                    f.filename = 'files/test'+ extension            
                     f.save(f.filename)
                     transformAudio(f.filename)
                     generateSpectos()
@@ -146,7 +78,7 @@ def uploadTest():
                 
                 elif(extension == '.txt' or extension == '.json' ):
                     app.logger.info('extension valid -->' +extension)
-                    f.filename = 'type2/files/test'+ extension            
+                    f.filename = 'files/test'+ extension            
                     f.save(f.filename)
                     return render_template('processText.html')
   
