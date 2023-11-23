@@ -275,7 +275,7 @@ def trainingInProgress():
     print("y ==>",y)
 
     # splitting data
-    x_train, x_test, y_train, y_test = train_test_split(X, y, test_size=0.20, train_size=0.80, random_state=1, shuffle=True)
+    x_train, x_test, y_train, y_test = train_test_split(X, y, test_size=0.30, train_size=0.70, random_state=1, shuffle=True)
     x_val, x_test, y_val, y_test = train_test_split(x_test, y_test, test_size=0.5, train_size=0.5, random_state=1, shuffle=True)
     # print("X train", x_train.shape)
     # print("X train:" ,np.asarray(x_train).shape)
@@ -301,7 +301,7 @@ def trainingInProgress():
 
     model = get_model(X.shape[1])
 
-    epochs = 250
+    epochs = 300
     rlrp = ReduceLROnPlateau(monitor='loss', factor=0.2, verbose=1, patience=5, min_lr=0.000001) #
 
     history=model.fit(x_train, y_train, batch_size=28, epochs=epochs, validation_data=(x_val, y_val), callbacks=[rlrp])
@@ -418,17 +418,26 @@ def showResult():
 
     print(y_pred)
 
-    df = pd.DataFrame(columns=['Predicted Labels', 'Actual Labels'])
+    # df = pd.DataFrame(columns=['Predicted Labels', 'Actual Labels'])
+    df = pd.DataFrame(columns=['Predicted Labels'])
+    
+
     df['Predicted Labels'] = np.array(y_pred).flatten()
+    
+    predicted_values=df
     # df['Actual Labels'] = Y.flatten()
     
     with open("prediction.csv", "w") as outfile:
        df.to_csv(outfile)
     
     output=' '.join(y_pred[0])
+   
+    print("df",df)
+    # for i,value in enumerate(predicted_values.items()):
+
     print(Get_model_description)
 
-    return render_template('showResult.html',summary=output)
+    return render_template('showResult.html',predicted_values=predicted_values)
 
 
 

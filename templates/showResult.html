@@ -16,7 +16,12 @@
          <h4>Masters Thesis at LIU</h4>
       </div>
 
- <h2>Result is: </h2>    <h4>{{summary}}<h4>
+ <h2>Results are: </h2>
+   <ul>
+        {% for prediction in predicted_values %}
+            <li>{{ prediction }}</li>
+        {% endfor %}
+    </ul>
 
 
 
