@@ -420,11 +420,11 @@ def showResult():
 
     # df = pd.DataFrame(columns=['Predicted Labels', 'Actual Labels'])
     df = pd.DataFrame(columns=['Predicted Labels'])
-    
+    predicted_values=df
 
     df['Predicted Labels'] = np.array(y_pred).flatten()
     
-    predicted_values=df
+
     # df['Actual Labels'] = Y.flatten()
     
     with open("prediction.csv", "w") as outfile:

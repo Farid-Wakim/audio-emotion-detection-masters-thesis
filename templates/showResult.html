@@ -18,7 +18,7 @@
 
  <h2>Results are: </h2>
    <ul>
-        {% for prediction in predicted_values %}
+        {% for audio_file, prediction in predicted_values.items() %}
             <li>{{ prediction }}</li>
         {% endfor %}
     </ul>
